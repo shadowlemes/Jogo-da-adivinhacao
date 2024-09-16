@@ -1,65 +1,57 @@
-﻿Console.WriteLine(@"
-░░░░░██╗░█████╗░░██████╗░░█████╗░  ██████╗░░█████╗░
-░░░░░██║██╔══██╗██╔════╝░██╔══██╗  ██╔══██╗██╔══██╗
-░░░░░██║██║░░██║██║░░██╗░██║░░██║  ██║░░██║███████║
-██╗░░██║██║░░██║██║░░╚██╗██║░░██║  ██║░░██║██╔══██║
-╚█████╔╝╚█████╔╝╚██████╔╝╚█████╔╝  ██████╔╝██║░░██║
-░╚════╝░░╚════╝░░╚═════╝░░╚════╝░  ╚═════╝░╚═╝░░╚═╝
+﻿using System;
 
-░█████╗░██████╗░██╗██╗░░░██╗██╗███╗░░██╗██╗░░██╗░█████╗░░█████╗░░█████╗░░█████╗░
-██╔══██╗██╔══██╗██║██║░░░██║██║████╗░██║██║░░██║██╔══██╗██╔══██╗██╔══██╗██╔══██╗
-███████║██║░░██║██║╚██╗░██╔╝██║██╔██╗██║███████║███████║██║░░╚═╝███████║██║░░██║
-██╔══██║██║░░██║██║░╚████╔╝░██║██║╚████║██╔══██║██╔══██║██║░░██╗██╔══██║██║░░██║
-██║░░██║██████╔╝██║░░╚██╔╝░░██║██║░╚███║██║░░██║██║░░██║╚█████╔╝██║░░██║╚█████╔╝
-╚═╝░░╚═╝╚═════╝░╚═╝░░░╚═╝░░░╚═╝╚═╝░░╚══╝╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░╚═╝░░╚═╝░╚════╝░");
-Console.WriteLine("\nInforme seu nome por favor:");
-//Primeiro vamos criar a variável
-int numeroSecreto = new Random().Next(1, 101);
-
-//Variável que armazane as tentativas realizadas
-int tentativas = 0;
-
-// Captura o nome do jogador
-string nomeJogador = Console.ReadLine()!;
-Console.Clear(); //Esse trecho limpa as mensagem anteriores, trazendo somente as seguintes 
-
-// Exibe o nome do jogador
-Console.WriteLine("Olá " + nomeJogador + ", pressione qualquer tecla para iniciar o game:");
-Console.ReadLine();
-Console.Clear();
-
-while (true)
+namespace JogoAdivinhacao
 {
-    Console.WriteLine("\nAdivinhe o número de 1 até 100:");
-
-    //Aqui vamos criar um loop
-    while (true)
+    class Program
     {
-        //Aqui pede para que o usuário digite o número e senha convertido para int
-        int numeroDigitado = int.Parse(Console.ReadLine()!);        
+        static void Main()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine("Jogo Advinhação");
+            Console.ResetColor();
 
-        //Verificar se o número é maior ou menor que o da variavel armazenada
-        if (numeroDigitado > numeroSecreto)
-        {
+            Console.WriteLine("\nInforme seu nome:");
+            string nomeJogador = Console.ReadLine()!;
             Console.Clear();
-            Thread.Sleep(1000); //Esse trecho traz delay para a mensagem seguinte
-            Console.WriteLine("\nO número digitado é maior do que o número secreto.");
-        }
-        else if (numeroDigitado < numeroSecreto)
-        {
+            int numeroSecreto = new Random().Next(1, 101);
+            Console.WriteLine($"Olá {nomeJogador}, pressione qualquer tecla para iniciar o game:");
+            Console.ReadLine();
             Console.Clear();
-            Thread.Sleep(1000);
-            Console.WriteLine("\nO número digitado é menor do que o número secreto.");
-        }
 
-        //Quando usuário acertar o número
-        else
-        {
-            Console.Clear();
-            Thread.Sleep(1000);
-            Console.WriteLine("\nParabéns " + nomeJogador + ", você acertou com " + tentativas + " tentativas, o número secreto era " + numeroSecreto + ".");
-            break;
+            int tentativas = 5;
+
+            Console.WriteLine("\nAdivinhe o número de 1 até 100:");
+
+            //loop
+            while (true)
+            {
+                int numeroDigitado = int.Parse(Console.ReadLine()!);
+
+                if (numeroDigitado > numeroSecreto)
+                {
+                    Console.WriteLine($"\nO número {numeroDigitado} é maior do que o número secreto.\nTentativa {tentativas}.\n");
+                }
+                if (numeroDigitado < numeroSecreto)
+                {
+                    Console.WriteLine($"\nO número {numeroDigitado} é menor do que o número secreto.\nTentativa {tentativas}.\n");
+                }
+                //Quando usuário acertar o número
+                if (numeroDigitado == numeroSecreto)
+                {
+                    Console.Clear();
+                    Console.WriteLine("\nParabéns " + nomeJogador + ", você acertou com " + tentativas + " tentativas, o número secreto era " + numeroSecreto + ".");
+                    break;
+                }
+                if (tentativas == 0)
+                {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Fim de jogo, você não possui mais tentativas");
+                    Console.ResetColor();
+                    Main();
+                }
+                tentativas++;
+            }
         }
-        tentativas++;
     }
 }
